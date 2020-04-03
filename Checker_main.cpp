@@ -16,22 +16,21 @@ int main(int argc, char **argv)
   {
     genStack<char> *stack = new genStack<char>(stackSize);
     int lineNum = 0;
-
-    cout << "what is the name or path of the file you want analyzed?" << endl;
+    ifstream inFS;
+    cout << "Welcome to Syntax Checker! What is the name or path of the file you want analyzed?" << endl;
     cin >> fileName;
 
     inFS.open(fileName);
     if (!inFS.is_open())
     {
-      cout << "could not open file." << endl;
+      cout << "Could not open file." << endl;
       cout << "please enter a correct file name and try again." << endl;
-      break;
     }
 
     while (!inFS.eof() && !failedTest)
     {
       inFS >> line;
-      line++;
+      lineNum++;
       if(!inFS.fail() && !failedTest)
       {
         for (int i = 0; i < line.length(); ++i)
@@ -46,29 +45,29 @@ int main(int argc, char **argv)
             char toCheck = stack -> pop();
             if (toCheck != '(')
             {
-              cout << "Error at line " << lineNum << " Expected (" << endl;
+              cout << "Error at line " << lineNum << "! Expected ( !" << endl;
               failedTest = true;
               break;
             }
           }
 
-          if (line[i] == '[')
+          if (line[i] == ']')
           {
             char toCheck = stack -> pop();
             if (toCheck != '[')
             {
-              cout << "Error at line " << lineNum << " Expected [" << endl;
+              cout << "Error at line " << lineNum << "! Expected [ !" << endl;
               failedTest = true;
               break;
             }
           }
 
-          if (line[i] == '{')
+          if (line[i] == '}')
           {
             char toCheck = stack -> pop();
             if (toCheck != '{')
             {
-              cout << "Error at line " << lineNum << " Expected {" << endl;
+              cout << "Error at line " << lineNum << "! Expected { !" << endl;
               failedTest = true;
               break;
             }
@@ -76,8 +75,12 @@ int main(int argc, char **argv)
         }
       }
     }
-    cout << "file done! Would you like to test another file? (true/false)" << endl;
-    cin << cont;
+    if (stack -> isEmpty() == false)
+    {
+      cout << "Error at line " << lineNum << "! Unclosed (, [, or { !" << endl;
+    }
+    cout << "File done! Would you like to test another file? (true = 1/false = 0)" << endl;
+    cin >> cont;
   }
-  cout << "thank you for using the Syntax Checker! Exiting..." << endl; 
+  cout << "Thank you for using the Syntax Checker! Exiting..." << endl;
 }

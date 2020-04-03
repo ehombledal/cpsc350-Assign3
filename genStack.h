@@ -44,7 +44,6 @@ genStack<T>::genStack(int maxSize) //overloaded
   m_size = maxSize;
   top = -1;
 
-  cout << "class instantiated!" << endl;
 }
 
 template <typename T>
